@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'x3-admin'`, () => {
+  it(`should have as title 'x3-soft-admin'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('x3-admin');
+    expect(app.title).toEqual('x3-soft-admin');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('x3-admin app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('x3-soft-admin app is running!');
   });
 });

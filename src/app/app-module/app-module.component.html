@@ -1,0 +1,7 @@
+<div class="content">
+    <div *ngIf="getData; else loading">
+        {{ getData }}
+    </div>
+    <ng-template class="ok" #loading>Not connection</ng-template>
+</div>
+

@@ -1,0 +1,97 @@
+import {Component, OnInit, AfterContentInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {WebSocketService} from "../web-socket.service";
+import {environment} from "../../environments/environment";
+import {forkJoin, Observable, of} from "rxjs";
+import Global = WebAssembly.Global;
+
+@Component({
+    selector: 'app-app-module',
+    templateUrl: './app-module.component.html',
+    styleUrls: ['./app-module.component.scss']
+})
+export class AppModuleComponent implements OnInit {
+
+    ws
+    moduleName;
+    getData;
+
+    constructor(private route$: ActivatedRoute, private wsService$: WebSocketService) {
+
+    }
+
+    url: string = environment.websocket.address + environment.websocket.post
+
+    ngOnInit() {
+        this.connectedSocket(this.url).subscribe(data => {
+            console.log('Подкиска на подключения', data)
+        })
+        this.getModules()
+        this.sendMessage(`{'ok': 'ok'}`)
+    }
+
+    connectedSocket(url: string) {
+        this.ws = new WebSocket(url);
+        return new Observable(observer => {
+            this.ws.onopen = (e) => {
+                console.log('Connection Open')
+            }
+            this.ws.onmessage = async (e) => {
+                console.group('Получено от сервера: ')
+                this.getData = e.data
+                console.log(e.data)
+                console.groupEnd()
+            }
+            this.ws.error = async (e) => {
+                observer.error(e)
+                console.log('Error websocket in connection: ', e)
+            }
+            this.ws.onclose = async (e) => {
+                let ws = this.ws;
+                let f = this.connectedSocket(url)
+                let interval = setInterval(function () {
+                    if (ws.readyState == 3) {
+                        location.reload()
+                    } else {
+                        clearInterval(interval)
+                    }
+                }, 1000)
+                console.log('Close on websocket: ', e)
+            }
+        })
+    }
+
+    sendMessage(object) {
+        let ws = this.ws
+        if (this.ws.readyState == 1) {
+            setTimeout(function () {
+                let obj = JSON.stringify(object);
+                ws.send(obj)
+            }, 200)
+        } else {
+            let interval = setInterval(function () {
+                if (ws.readyState == 1) {
+                    let obj = JSON.stringify(object);
+                    ws.send(obj)
+                    clearInterval(interval)
+                } else {
+                    console.log('not ready state')
+                }
+            }, 50)
+
+        }
+    }
+
+    getModules() {
+        let obj = {
+            "event": "user",
+            "method": "get.system.modules"
+        }
+        this.sendMessage(obj)
+        console.group('Сообщение отправлено на сервер:')
+        console.log(obj)
+        console.groupEnd();
+    }
+
+}

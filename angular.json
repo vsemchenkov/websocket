@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "x3-admin": {
+    "x3-soft-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/x3-admin",
+            "outputPath": "dist/x3-soft-admin",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "x3-admin:build"
+            "browserTarget": "x3-soft-admin:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "x3-admin:build:production"
+              "browserTarget": "x3-soft-admin:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "x3-admin:build"
+            "browserTarget": "x3-soft-admin:build"
           }
         },
         "test": {
@@ -114,15 +114,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "x3-admin:serve"
+            "devServerTarget": "x3-soft-admin:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "x3-admin:serve:production"
+              "devServerTarget": "x3-soft-admin:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "x3-admin"
+    }
+  },
+  "defaultProject": "x3-soft-admin",
+  "cli": {
+    "analytics": "2a9ecc8a-716d-4ac0-ad9f-97976bcb9c04"
+  }
 }
