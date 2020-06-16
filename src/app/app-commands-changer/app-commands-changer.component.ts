@@ -1,25 +1,25 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { WebSocketService } from "./web-socket.service";
-import { environment } from "../environments/environment";
+import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-app-commands-changer',
+  templateUrl: './app-commands-changer.component.html',
+  styleUrls: ['./app-commands-changer.component.scss']
 })
-export class AppComponent  implements OnInit {
-  title = 'x3-soft-admin';
+export class AppCommandsChangerComponent implements OnInit {
 
   url;
   ws;
   getData;
   token: number = 1;
-  selectedIndex: number = null;
+  modules
 
+  Change
 
-  constructor(private route$: ActivatedRoute, private websoketService$: WebSocketService) {
+  constructor(private route$: ActivatedRoute) {
+
   }
 
   ngOnInit() {
@@ -27,14 +27,22 @@ export class AppComponent  implements OnInit {
     this.connectedSocket(this.url).subscribe(data => {
       console.log(data)
     })
+    this.getModules()
   }
 
   connectedSocket(url: string) {
     this.ws = new WebSocket(url);
     return new Observable(observer => {
+      this.ws.onopen = (e) => {
+        console.log("Поключились от команд",e)
+      }
       this.ws.onmessage = async (e) => {
         console.group('Получено от сервера: ')
+        if(e.data.method == 'get.system.modules') {
+          this.modules = JSON.parse(e.data)
+        } else {
           this.getData = JSON.parse(e.data)
+        }
         console.log(e.data)
         console.groupEnd()
       }
@@ -49,8 +57,8 @@ export class AppComponent  implements OnInit {
       }
     })
   }
-
   sendMessage(object) {
+    console.log(this.ws)
     let ws = this.ws
     if (this.ws.readyState == 1) {
       setTimeout(function () {
@@ -71,64 +79,33 @@ export class AppComponent  implements OnInit {
     }
   }
 
+ getAllCommands() {
 
+    let obj = {
+      "JSON-RPC": "2.0",
+      "method": "get.system.moduleinfo",
+      "params": {
+        "module": ''
+      },
+      "id": "1"
+    }
+    // this.sendMessage(obj)
+    console.group('Сообщение отправлено на сервер:')
+    console.log(obj)
+    console.groupEnd();
+  }
 
   getModules() {
     let obj = {
       "JSON-RPC": "2.0",
       "method": "get.system.modules",
-      "params": {},
-      "id": "1"
+      params: {},
+      "id": "2"
     }
     this.sendMessage(obj)
     console.group('Сообщение отправлено на сервер:')
     console.log(obj)
     console.groupEnd();
   }
-
-  sendCommand(object) {
-    let ws = this.ws
-    if (this.ws.readyState == 1) {
-      setTimeout(function () {
-        let obj = JSON.stringify(object);
-        ws.send(obj)
-      }, 200)
-    } else {
-      let interval = setInterval(function () {
-        if (ws.readyState == 1) {
-          let obj = JSON.stringify(object);
-          ws.send(obj)
-          clearInterval(interval)
-        } else {
-          console.log('not ready state')
-        }
-      }, 50)
-
-    }
-  }
-
-  setCommand(method: string, params: string) {
-
-    // if(!params) {
-    //   alert("Empty params")
-    // } else {
-      let paramsRefactor = '{' + params + '}'
-      paramsRefactor = JSON.parse(paramsRefactor)
-
-      let obj = {
-        "JSON-RPC": "2.0",
-        "method": method,
-        "params": paramsRefactor,
-        "id": this.token++
-      }
-      this.sendMessage(obj)
-    // }
-  }
-
-
-  setIndex(index: number) {
-    this.selectedIndex = index;
-  }
-
 
 }

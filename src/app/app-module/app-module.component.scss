@@ -1,3 +1,116 @@
 .content {
   height: 100vh;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  font-size: 16px;
+  padding: 5px;
+}
+input {
+  outline: none;
+}
+
+li {
+  list-style: none;
+}
+
+.scenario-composition-devices {
+  display: grid;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 40px;
+  grid-gap: 10px;
+
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.scenario-composition-devices > input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.scenario-composition-devices > button {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 1px solid #737272;
+  outline: none;
+  margin-left: 10px;
+}
+.scenario-composition-devices > button:hover {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 1px solid ;
+  background: transparent;
+  outline: none;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+
+.scenario-composition-scenario {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+
+  grid-template-columns: 1fr 1fr 1fr 1fr 40px;
+  grid-gap: 20px;
+  grid-template-areas: "input-name . . . scenario-btn";
+
+  box-sizing: content-box;
+  padding: 15px;
+}
+.scenario-composition-scenario > input {
+  grid-area: input-name
+}
+.scenario-composition-scenario > button {
+  grid-area: scenario-btn
+}
+
+
+.scenario-content-list {
+  display: grid;
+  margin: 15px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+
+
+.example-tree-invisible {
+  display: none;
+}
+
+mat-tree {
+  padding: 10px;
+}
+
+.mat-tree-node {
+  position: relative;
+}
+.mat-tree-node > strong {
+  padding: 10px;
+}
+
+.mat-tree-node > button {
+  cursor: pointer;
+}
+
+.mat-tree-node > .btn-scenario-play {
+  position: absolute;
+  float: right;
+  right: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}

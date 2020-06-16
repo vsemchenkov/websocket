@@ -1,10 +1,48 @@
-import {Component, OnInit, AfterContentInit} from '@angular/core';
+import {Component, OnInit, AfterContentInit, Input, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {WebSocketService} from "../web-socket.service";
 import {environment} from "../../environments/environment";
 import {forkJoin, Observable, of} from "rxjs";
 import Global = WebAssembly.Global;
+import {MatTree, MatTreeNestedDataSource} from "@angular/material/tree";
+import {NestedTreeControl} from "@angular/cdk/tree";
+
+interface scenarioStack {
+    name: string,
+    device?: string,
+    time?: string,
+    type?: string,
+    children?: scenarioStack[]
+}
+
+const TREE_DATA: scenarioStack[] = [
+    {
+        name: 'ok',
+        children: [
+            {
+                name: 'default 1',
+                device: "KMX",
+                time: "10",
+                type: "normal"
+            },
+            {
+                name: "default 2",
+                device: "KMX",
+                time: "10",
+                type: "normal"
+            }
+        ]
+    },
+    {
+        name: 'scenarion 2',
+        children: [
+            {
+                name: 'default 1'
+            }
+        ]
+    }
+]
 
 @Component({
     selector: 'app-app-module',
@@ -12,23 +50,30 @@ import Global = WebAssembly.Global;
     styleUrls: ['./app-module.component.scss']
 })
 export class AppModuleComponent implements OnInit {
-
+    @ViewChild('treeDom') tree: MatTree<any>;
+    @Input()selectedIndex: number | null
     ws
     moduleName;
     getData;
+    treeControl = new NestedTreeControl<scenarioStack>(node => node.children)
+    dataSource = new MatTreeNestedDataSource<scenarioStack>()
 
     constructor(private route$: ActivatedRoute, private wsService$: WebSocketService) {
-
+        this.dataSource.data = TREE_DATA;
     }
 
-    url: string = environment.websocket.address + environment.websocket.post
+    hasChild = (_: number, node: scenarioStack) => !!node.children && node.children.length > 0;
+
+    url: string = environment.websocket.address + environment.websocket.port
 
     ngOnInit() {
         this.connectedSocket(this.url).subscribe(data => {
             console.log('Подкиска на подключения', data)
         })
-        this.getModules()
-        this.sendMessage(`{'ok': 'ok'}`)
+        console.log(
+            this.route$.snapshot.paramMap.get('module')
+        )
+
     }
 
     connectedSocket(url: string) {
@@ -79,19 +124,55 @@ export class AppModuleComponent implements OnInit {
                     console.log('not ready state')
                 }
             }, 50)
-
         }
     }
 
-    getModules() {
-        let obj = {
-            "event": "user",
-            "method": "get.system.modules"
-        }
-        this.sendMessage(obj)
-        console.group('Сообщение отправлено на сервер:')
-        console.log(obj)
-        console.groupEnd();
+    private refreshTree(nd): void {
+        this.treeControl.collapse(nd);
+        this.treeControl.expand(nd);
     }
 
+    addScenario(name: string) {
+        this.dataSource.data.push({"name": name, children: []})
+        let _data = this.dataSource.data;
+        this.dataSource.data = null;
+        this.dataSource.data = _data;
+    }
+
+    addScenarioDevice(name: string, device: string, time: string, type: string, scenarioName: string) {
+        console.group('Scenario event')
+        console.log('scenarion Name: ', scenarioName)
+        console.log('scenarion Device: ', device)
+        console.log('scenarion Time: ', time)
+        console.log('scenarion Type: ', type)
+        console.groupEnd()
+        this.dataSource.data = this.dataSource.data.map(function (current) {
+            if(current.name == scenarioName) {
+                current.children.push({
+                    name: name,
+                    device: device,
+                    time: time,
+                    type: type
+                })
+            }
+            if(current) {
+                return current
+            }
+
+        })
+        let _data = this.dataSource.data;
+        this.dataSource.data = null;
+        this.dataSource.data = _data;
+        console.log(this.dataSource.data)
+        console.group('Scenario event')
+        // this.dataSource.data.map(current => {
+        //     current.children.map( current => {
+        //         if(current.name == '123') {
+        //             console.log('add obj: ', current)
+        //         }
+        //     })
+        //     return current
+        // })
+        console.groupEnd()
+    }
 }

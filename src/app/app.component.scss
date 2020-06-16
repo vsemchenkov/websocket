@@ -23,7 +23,7 @@ main {
   grid-template-columns: 2fr 8fr 3fr;
   width: 100%;
   height: calc(100vh - 100px - 150px);
-  background: blue;
+  background: white;
 }
 
 ng-component {
@@ -37,7 +37,7 @@ ng-component::-webkit-scrollbar {
 
 ng-component::-webkit-scrollbar-thumb {
   border-radius: 50%;
-  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   background-color: #737272;
   border: 1px solid #000;
 }
@@ -46,27 +46,10 @@ ng-component::-webkit-scrollbar-thumb {
 .left-side {
   border-right: 1px solid black;
   background: transparent;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
-
-.left-side::-webkit-scrollbar {
-  width: 10px;
-}
-
-.left-side > h1 {
-  padding: 15px;
-}
-
-.left-side > ul {
-  padding: 0;
-  margin: 0;
-  outline: none;
-  list-style: none;
-}
-
-.left-side > ul > li {
-  padding: 15px;
-  background: coral;
+.left-side:hover {
+  overflow: scroll;
 }
 
 
@@ -104,17 +87,26 @@ ng-component::-webkit-scrollbar-thumb {
 footer {
   display: grid;
 
+  grid-template-rows: 60px 90px;
   grid-template-columns: 2fr 8fr 3fr;
+  grid-template-areas:
+          "cl cl cl"
+          "cm debug debug";
   position: relative;
-  height: 150px;
   bottom: 0;
   background: green;
 }
+
+app-app-commands {
+  grid-area: cl;
+}
+
 footer > .context-menu {
   display: grid;
   justify-content: center;
   align-items: center;
   background: black;
+  grid-area: cm;
 }
 
 footer > .context-menu > .circle {
@@ -135,3 +127,6 @@ footer > .context-menu > .circle {
   z-index: 9999;
 }
 
+footer > .debug {
+  grid-area: debug;
+}

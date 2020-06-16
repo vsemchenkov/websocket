@@ -1,0 +1,25 @@
+<h1>Команды: </h1>
+<select name="">
+    <option value="">set</option>
+    <option value="">get</option>
+</select>
+<ul *ngFor="let item of modules">
+    <li>{{item}}</li>
+</ul>
+<select name="">
+    <option value=""></option>
+</select>
+<select name="">
+    <option value="">command</option>
+</select>
+<table>
+    <tr>
+        <th>Параметры</th>
+        <th>Значения</th>
+    </tr>
+    <tr>
+        <td>Параметр</td>
+        <td><input type="text"></td>
+    </tr>
+</table>
+<button (click)="getAllCommands()">send</button>

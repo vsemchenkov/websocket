@@ -1,0 +1,26 @@
+.command-line {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+
+  grid-template-columns: 1fr 60px;
+  grid-template-rows: 1fr 1fr;
+
+  grid-template-areas:
+          "cl-method cl-btn"
+          "cl-params cl-btn";
+
+  grid-area: cl;
+  padding: 15px;
+}
+
+.command-line--btn {
+  grid-area: cl-btn;
+  height: 100%;
+}
+.command-line--method {
+  grid-area: cl-method;
+}
+.command-line--params {
+  grid-area: cl-params;
+}

@@ -15,7 +15,7 @@ wss.on('connection', function connection (ws, req) {
             console.log('ok')
         }
         if(message.event == 'user') {
-            ws.send('{ "name": "kmx", "type": "combobox", "data": [{"volume": "100"}]}')
+            ws.send('[{ "name": "kmx", "type": "combobox", "data": [{"volume": "100"}]}]')
         }
         if(message.event == 'message') {
             console.log(`Received message ${message}`)

@@ -1,48 +1,23 @@
 <div class="wrapper">
-  <header>
+    <header>
 
-  </header>
-  <main>
-    <aside class="left-side">
-      <h1>Модули:</h1>
-      <ul>
-        <p *ngIf="getData; else loading">
-          {{ getData }}
-        </p>
-        <ng-template #loading>Not connection</ng-template>
-      </ul>
-    </aside>
-    <ng-component></ng-component>
-    <aside class="right-side">
-      <h1>Команды: </h1>
-      <select name="">
-        <option value="">set</option>
-      </select>
-      <select name="">
-        <option value="">modules</option>
-      </select>
-      <select name="">
-        <option value="">command</option>
-      </select>
-      <table>
-        <tr>
-          <th>Параметры</th>
-          <th>Значения</th>
-        </tr>
-        <tr>
-          <td>Параметр</td>
-          <td><input type="text"></td>
-        </tr>
-      </table>
-      <button (click)="getModules()">send</button>
-    </aside>
-  </main>
-  <footer>
-    <div class="context-menu">
-      <div class="circle">
-        <nav></nav>
-      </div>
-    </div>
-    <div class="debug"></div>
-  </footer>
+    </header>
+    <main>
+        <aside class="left-side">
+            <app-app-main-menu></app-app-main-menu>
+        </aside>
+        <ng-component></ng-component>
+        <aside class="right-side">
+            <app-app-commands-changer></app-app-commands-changer>
+        </aside>
+    </main>
+    <footer>
+        <app-app-commands></app-app-commands>
+        <div class="context-menu">
+            <div class="circle">
+                <nav></nav>
+            </div>
+        </div>
+        <div class="debug"></div>
+    </footer>
 </div>

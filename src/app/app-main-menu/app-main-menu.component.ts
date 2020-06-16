@@ -1,16 +1,13 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { WebSocketService } from "./web-socket.service";
-import { environment } from "../environments/environment";
+import { Component, OnInit } from '@angular/core';
+import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-app-main-menu',
+  templateUrl: './app-main-menu.component.html',
+  styleUrls: ['./app-main-menu.component.scss']
 })
-export class AppComponent  implements OnInit {
-  title = 'x3-soft-admin';
+export class AppMainMenuComponent implements OnInit {
 
   url;
   ws;
@@ -18,23 +15,23 @@ export class AppComponent  implements OnInit {
   token: number = 1;
   selectedIndex: number = null;
 
+  constructor() { }
 
-  constructor(private route$: ActivatedRoute, private websoketService$: WebSocketService) {
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.url = environment.websocket.address + environment.websocket.port
     this.connectedSocket(this.url).subscribe(data => {
       console.log(data)
     })
+    // this.getModules()
   }
+
 
   connectedSocket(url: string) {
     this.ws = new WebSocket(url);
     return new Observable(observer => {
       this.ws.onmessage = async (e) => {
         console.group('Получено от сервера: ')
-          this.getData = JSON.parse(e.data)
+        this.getData = JSON.parse(e.data)
         console.log(e.data)
         console.groupEnd()
       }
@@ -66,13 +63,10 @@ export class AppComponent  implements OnInit {
         } else {
           console.log('not ready state')
         }
-      }, 500)
+      }, 2000)
 
     }
   }
-
-
-
   getModules() {
     let obj = {
       "JSON-RPC": "2.0",
@@ -85,50 +79,7 @@ export class AppComponent  implements OnInit {
     console.log(obj)
     console.groupEnd();
   }
-
-  sendCommand(object) {
-    let ws = this.ws
-    if (this.ws.readyState == 1) {
-      setTimeout(function () {
-        let obj = JSON.stringify(object);
-        ws.send(obj)
-      }, 200)
-    } else {
-      let interval = setInterval(function () {
-        if (ws.readyState == 1) {
-          let obj = JSON.stringify(object);
-          ws.send(obj)
-          clearInterval(interval)
-        } else {
-          console.log('not ready state')
-        }
-      }, 50)
-
-    }
-  }
-
-  setCommand(method: string, params: string) {
-
-    // if(!params) {
-    //   alert("Empty params")
-    // } else {
-      let paramsRefactor = '{' + params + '}'
-      paramsRefactor = JSON.parse(paramsRefactor)
-
-      let obj = {
-        "JSON-RPC": "2.0",
-        "method": method,
-        "params": paramsRefactor,
-        "id": this.token++
-      }
-      this.sendMessage(obj)
-    // }
-  }
-
-
   setIndex(index: number) {
     this.selectedIndex = index;
   }
-
-
 }

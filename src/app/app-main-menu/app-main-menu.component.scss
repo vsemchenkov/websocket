@@ -1,0 +1,41 @@
+ h1 {
+  padding: 15px;
+}
+
+div > ul {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  list-style: none;
+}
+
+div > ul > li {
+  position: relative;
+  padding: 15px;
+  background: #737272;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+div > ul > li:hover {
+  background: mediumseagreen;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+div > ul > li {
+  border: none;
+  outline: none;
+}
+
+div > ul > .check-item {
+  background: #0f76c2 !important;
+}
+div > ul > .active {
+  background: cornflowerblue;
+}
+div > ul > li > span {
+  position: absolute;
+  float: right;
+}
+div > ul > li > span > .activated {
+  color: white !important;
+}

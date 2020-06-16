@@ -1,0 +1,20 @@
+<h1>Модули:</h1>
+<div class="" *ngIf="getData; else loading">
+    <ul *ngFor="let item of getData.result.data; let i = index">
+        <li (click)="setIndex(i)" *ngIf="item.id > 0"
+            [class.check-item]="selectedIndex === i"
+            [class.active]="item.active == 1"
+            [routerLink]="'module/' + item.name">
+            {{item.name}}
+            <span style="position: relative; right: 0" *ngIf="item.active == 1">
+                                <i
+                                        [class.fa-plug]="selectedIndex === i"
+                                        [class.activated]="selectedIndex === i"
+                                        [class.fa]="selectedIndex === i"
+                                        style="right: 0" aria-hidden="true"></i>
+                            <ng-template #connection>not connect</ng-template>
+                        </span>
+        </li>
+    </ul>
+</div>
+<ng-template #loading>Not connection</ng-template>

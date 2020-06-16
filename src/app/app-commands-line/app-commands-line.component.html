@@ -1,0 +1,11 @@
+<div class="command-line">
+    <input class="command-line--method" type="text" placeholder="method"
+           (keyup.enter)="setCommand(method.value, params.value)"
+           #method>
+    <button class="command-line--btn"
+            (click)="setCommand(method.value, params.value)">Send
+    </button>
+    <input class="command-line--params" type="text" placeholder="params"
+           (keyup.enter)="setCommand(method.value, params.value)"
+           #params>
+</div>
