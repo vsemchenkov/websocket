@@ -15,6 +15,8 @@ export class AppMainMenuComponent implements OnInit {
   token: number = 1;
   selectedIndex: number = null;
 
+  RotateChevron = true
+
   constructor() { }
 
   ngOnInit(): void {
@@ -22,7 +24,7 @@ export class AppMainMenuComponent implements OnInit {
     this.connectedSocket(this.url).subscribe(data => {
       console.log(data)
     })
-    // this.getModules()
+    this.getModules()
   }
 
 
@@ -81,5 +83,9 @@ export class AppMainMenuComponent implements OnInit {
   }
   setIndex(index: number) {
     this.selectedIndex = index;
+  }
+
+  getRotate() {
+    console.log(this.RotateChevron)
   }
 }

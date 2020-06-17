@@ -1,10 +1,25 @@
-<h1>Модули:</h1>
+<!--<h1>Модули:</h1>-->
 <div class="" *ngIf="getData; else loading">
-    <ul *ngFor="let item of getData.result.data; let i = index">
-        <li (click)="setIndex(i)" *ngIf="item.id > 0"
-            [class.check-item]="selectedIndex === i"
-            [class.active]="item.active == 1"
-            [routerLink]="'module/' + item.name">
+
+    <ons-list-header>Меню</ons-list-header>
+    <div class="list ng-star-inserted bg-grey pointer" (click)="RotateChevron = !RotateChevron;">
+        <div class="list-item active ng-star-inserted check-item">
+            <div class="center list-item__center" >Модули</div>
+            <div class="list-item__right right"><span [class.chevron-rotate]="RotateChevron == true" class="list-item__expand-chevron chevron" style=""></span></div>
+        </div>
+    </div>
+
+    <ons-list
+            [class.display]="RotateChevron == true"
+            [class.active-border]="RotateChevron == false"
+            id="contacts"
+            *ngFor="let item of getData.result.data; let i = index">
+        <ons-list-item (click)="setIndex(i)" *ngIf="item.id > 0"
+                       [class.check-item]="selectedIndex === i"
+                       [class.active-item]="selectedIndex === i"
+
+
+                       [routerLink]="'module/' + item.name">
             {{item.name}}
             <span style="position: relative; right: 0" *ngIf="item.active == 1">
                                 <i
@@ -13,8 +28,15 @@
                                         [class.fa]="selectedIndex === i"
                                         style="right: 0" aria-hidden="true"></i>
                             <ng-template #connection>not connect</ng-template>
-                        </span>
-        </li>
-    </ul>
+                </span>
+
+        </ons-list-item>
+    </ons-list>
+
 </div>
-<ng-template #loading>Not connection</ng-template>
+<ng-template #loading>
+    <div class="grid-center">
+        <ons-progress-circular style="display: grid; justify-content: center; align-items: center"
+                               indeterminate></ons-progress-circular>
+    </div>
+</ng-template>

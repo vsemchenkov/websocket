@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { AppCommandsLineComponent } from './app-commands-line/app-commands-line.component';
 import { AppMainMenuComponent } from './app-main-menu/app-main-menu.component';
 import { AppCommandsChangerComponent } from './app-commands-changer/app-commands-changer.component';
+import { OnsenModule } from "ngx-onsenui";
 
 
 
@@ -27,6 +28,7 @@ import { AppCommandsChangerComponent } from './app-commands-changer/app-commands
   ],
     imports: [
         BrowserModule,
+        OnsenModule,
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
@@ -37,6 +39,7 @@ import { AppCommandsChangerComponent } from './app-commands-changer/app-commands
         MatIconModule,
     ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

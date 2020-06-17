@@ -32,10 +32,50 @@ div > ul > .check-item {
 div > ul > .active {
   background: cornflowerblue;
 }
-div > ul > li > span {
-  position: absolute;
+
+
+ons-list-item {
+  cursor: pointer;
+}
+ span.ng-star-inserted {
+  position: absolute !important;
   float: right;
+   padding: 10px;
 }
 div > ul > li > span > .activated {
   color: white !important;
+}
+
+.bg-grey {
+  background: #ccc;
+}
+.grid-center {
+  display: grid;
+  width: 100%;
+  justify-content: center;
+}
+
+
+.chevron {
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+.chevron-rotate {
+  transform: rotate(315deg);
+}
+
+.pointer {
+  cursor: pointer;
+}
+.display {
+  display: none;
+}
+
+.active-item {
+  background: mediumseagreen;
+}
+
+.active-border {
+  background-size: 100% 0px, 100% 1px, 100% 1px, 100% 1px !important;
+  background-image: linear-gradient(0deg,#F3F,#ccc 50%,transparent 50%),linear-gradient(180deg,green,#ccc 50%,transparent 50%) !important;
 }

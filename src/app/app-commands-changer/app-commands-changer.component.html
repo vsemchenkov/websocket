@@ -1,25 +1,39 @@
-<h1>Команды: </h1>
-<select name="">
-    <option value="">set</option>
-    <option value="">get</option>
-</select>
-<ul *ngFor="let item of modules">
-    <li>{{item}}</li>
-</ul>
-<select name="">
-    <option value=""></option>
-</select>
-<select name="">
-    <option value="">command</option>
-</select>
-<table>
-    <tr>
-        <th>Параметры</th>
-        <th>Значения</th>
-    </tr>
-    <tr>
-        <td>Параметр</td>
-        <td><input type="text"></td>
-    </tr>
-</table>
-<button (click)="getAllCommands()">send</button>
+<ons-list-header>Команды</ons-list-header>
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ul *ngIf="modules; else loading">
+        <ons-select class="width-100" name="moduleUniq" [(ngModel)]="ngValue" #changesModule (change)="getAllCommands(changesModule.value)">
+            <option value="default">Module</option>
+            <option value="{{item.name}}" *ngFor="let item of modules" >{{item.name}}</option>
+        </ons-select>
+    </ul>
+    <ul *ngIf="moduleInfo; else loading">
+        <ons-select class="width-100" name="typeUniq" [(ngModel)]="ngValueType" (change)="getType(changeType.value)" #changeType>
+            <option value="default" selected>Type</option>
+            <option value="set">set</option>
+            <option value="get">get</option>
+        </ons-select>
+    </ul>
+    <ul>
+        <ons-select class="width-100" name="commandUniq" [(ngModel)]="ngValueCommand" (change)="getCommand(changeCommand.value)" *ngIf="ParamsType; else loading" #changeCommand>
+            <option value="default" selected>default</option>
+            <option value="{{command}}" *ngFor="let command of objectKeys(ParamsType)">{{command}}
+                <p>{{ParamsType[command].description}}</p>
+            </option>
+        </ons-select>
+    </ul>
+    <table *ngIf="command; else loading">
+        <tr>
+            <th>Параметры</th>
+            <th>Значения</th>
+        </tr>
+        <tr *ngFor="let params of command.params">
+            <td>{{params}}</td>
+            <td><input name="{{params}}" ngModel type="text" [placeholder]="params"></td>
+        </tr>
+    </table>
+
+    <ng-template #loading>loading...</ng-template>
+
+
+    <ons-button (click)="onSubmit(f)">send</ons-button>
+</form>
